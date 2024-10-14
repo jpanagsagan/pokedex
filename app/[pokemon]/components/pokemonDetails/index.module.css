@@ -40,11 +40,11 @@
 }
 
 .detailsInnerWrapper {
-  @apply w-full flex justify-evenly;
+  @apply w-full flex justify-evenly flex-col md:flex-row;
 }
 
 .detailsInnerWrapper :not(:last-child) {
-  @apply border-r-2 border-gray-300 border-solid p-2;
+  @apply border-b-2 md:border-r-2 border-gray-300 border-solid p-2;
 }
 
 .details {

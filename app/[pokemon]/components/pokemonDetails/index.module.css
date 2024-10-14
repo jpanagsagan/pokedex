@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
 
 .container {
-  @apply relative flex flex-col items-center justify-center h-full p-6 rounded-md shadow-lg text-[#333];
+  @apply relative flex flex-col items-center justify-between h-full p-6 pb-0 gap-4 rounded-md shadow-lg text-[#333];
 }
 
 .header {
-  @apply w-[95%] absolute top-12  flex justify-between left-1/2 transform -translate-x-1/2;
+  @apply w-full relative   flex justify-between;
 }
 
 .header p {
@@ -19,7 +19,7 @@
 }
 
 .imageWrapper {
-  @apply absolute w-[16rem] h-[16rem] top-32;
+  @apply relative w-[16rem] h-[16rem];
 }
 
 .imageWrapper img {
@@ -28,7 +28,7 @@
 }
 
 .detailsWrapper {
-  @apply mb-4 h-[52%] w-[95%] bg-white rounded-lg p-4 absolute bottom-0 left-1/2 transform -translate-x-1/2;
+  @apply mb-4 h-auto w-full bg-white rounded-lg p-4 relative;
 }
 
 .pokemonTypeContainer {

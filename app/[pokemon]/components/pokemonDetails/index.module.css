@@ -40,19 +40,19 @@
 }
 
 .detailsInnerWrapper {
-  @apply w-full flex justify-evenly flex-col md:flex-row;
+  @apply w-full flex justify-evenly;
 }
 
 .detailsInnerWrapper :not(:last-child) {
-  @apply border-b-2 md:border-r-2 border-gray-300 border-solid p-2;
+  @apply border-r-2 border-gray-300 border-solid p-2;
 }
 
 .details {
-  @apply text-black text-base w-full flex justify-center items-center flex-col mt-8 gap-2 capitalize;
+  @apply text-black text-base w-full flex justify-center items-center flex-col mt-8 gap-2 capitalize text-center;
 }
 
 .details p {
-  @apply text-gray-700 text-xl capitalize font-bold;
+  @apply text-gray-700 text-sm md:text-lg capitalize font-bold;
 }
 
 .statusTitle {

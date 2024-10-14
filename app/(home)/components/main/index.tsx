@@ -44,7 +44,7 @@ const MainComponent: React.FC = () => {
   };
 
   useEffect(() => {
-    loadPokemons('https://pokeapi.co/api/v2/pokemon?limit=20'); // Initial fetch
+    loadPokemons('https://pokeapi.co/api/v2/pokemon?limit=150'); // Initial fetch
   }, []);
 
   return (

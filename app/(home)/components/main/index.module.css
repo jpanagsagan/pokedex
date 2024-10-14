@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+.mainWrapper {
+  @apply relative mt-4 w-full bg-[rgb(255,255,255)] rounded-md p-4;
+  height: calc(100% - 13rem);
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+
+.gridContainer {
+  @apply h-full overflow-auto;
+}
+
+.gridContainer::-webkit-scrollbar {
+  display: none; /* Hide scrollbar */
+}
+
+.gridWrapper {
+  @apply h-full grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4;
+}
+
+.gridWrapper li {
+  @apply bg-white p-4 rounded-lg min-h-32 cursor-pointer flex justify-center items-center uppercase;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  font-family: 'Fredoka One', sans-serif;
+}

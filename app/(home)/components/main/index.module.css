@@ -17,7 +17,12 @@
   @apply h-full grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4;
 }
 
-.gridWrapper li {
+.listWrapper {
+  @apply h-full grid grid-cols-1 gap-4 p-4;
+}
+
+.gridWrapper li,
+.listWrapper li {
   @apply bg-white p-4 rounded-lg min-h-32 cursor-pointer flex justify-center items-center uppercase;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   font-family: 'Fredoka One', sans-serif;

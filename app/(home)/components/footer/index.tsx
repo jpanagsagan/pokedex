@@ -1,17 +1,17 @@
 'use client';
-import React, { useState } from 'react';
 import styles from './index.module.css';
+import useStore from '@/store/store';
 const FooterComponent = () => {
-  const [activeMenu, setActiveMenu] = useState('all');
-  const menuList = ['all', 'captured'];
+  const menuList: ('all' | 'captured')[] = ['all', 'captured'];
+  const { filter, setFilter } = useStore();
   return (
     <div className={styles.footer}>
       <ul>
         {menuList.map((menu, index) => (
           <li
             key={index}
-            className={`${activeMenu === menu ? styles.active : ''}`}
-            onClick={() => setActiveMenu(menu)}
+            className={`${filter === menu ? styles.active : ''}`}
+            onClick={() => setFilter(menu)}
           >
             {menu}
           </li>

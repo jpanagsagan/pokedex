@@ -6,6 +6,7 @@ import styles from './index.module.css';
 import { fetchPokemons } from '@/api/pokemon/fetchPokemon';
 import Link from 'next/link';
 import LoadingComponent from '@/components/loadingComponent';
+import useStore from '@/store/store';
 
 interface Pokemon {
   name: string;
@@ -23,6 +24,7 @@ const MainComponent: React.FC = () => {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [nextUrl, setNextUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const isList = useStore((state) => state.isList);
 
   const loadPokemons = async (url: string | null) => {
     if (loading || !url) return;
@@ -58,8 +60,7 @@ const MainComponent: React.FC = () => {
           loader={loading && <LoadingComponent />}
           scrollableTarget="scrollableDiv" // Set the scrollable target
         >
-          <ul className={styles.gridWrapper}>
-            {/* Use <ul> here */}
+          <ul className={isList ? styles.listWrapper : styles.gridWrapper}>
             {pokemons.map((pokemon, index) => (
               <Link key={index} href={`/${pokemon.name}`}>
                 <li>{pokemon.name}</li>

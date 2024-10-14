@@ -1,8 +1,9 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './index.module.css';
 import { PokemonType, typeColors } from '@/utils/colorEnums';
 import Image from 'next/image';
+import useStore from '@/store/store';
 
 type Details = {
   id: number;
@@ -14,14 +15,44 @@ type Details = {
   imageUrl: string;
   base_experience: number;
 };
+
 type PokemonDetailsProps = {
   details: Details;
 };
 
 const PokemonDetails: React.FC<PokemonDetailsProps> = ({ details }) => {
+  const [nickname, setNickname] = useState('');
+  const [dateAdded, setDateAdded] = useState('');
+  const { addPokemon } = useStore();
+
   const detailList: (keyof Details)[] = ['height', 'weight', 'base_experience', 'move'];
+
   // Get the background color based on the Pokémon type
   const backgroundColor = typeColors[details.type] || '#FFFFFF';
+
+  const savePokemon = () => {
+    const newEntry = {
+      id: details.id,
+      img: details.imageUrl,
+      name: details.name,
+      nickname,
+      dateAdded,
+    };
+
+    // Add the Pokémon to Zustand store
+    addPokemon(newEntry);
+
+    // Save to localStorage
+    const existingData = JSON.parse(localStorage.getItem('pokemonData') || '[]');
+    existingData.push(newEntry);
+    localStorage.setItem('pokemonData', JSON.stringify(existingData));
+
+    // Clear input fields after saving
+    setNickname('');
+    setDateAdded('');
+    alert('Pokémon details saved successfully!');
+  };
+
   return (
     <div className={styles.container} style={{ backgroundColor }}>
       <div className={styles.header}>
@@ -51,9 +82,25 @@ const PokemonDetails: React.FC<PokemonDetailsProps> = ({ details }) => {
 
         <h3 className={styles.statusTitle}>Status</h3>
         <div className={styles.inputWrapper}>
-          <input type="text" placeholder="Enter Nickname" className={styles.nicknameInput} />
-          <input type="text" placeholder="Enter Date (MM/DD/YYYY)" className={styles.dateInput} />
-          <button className={styles.captureButton} style={{ backgroundColor }}>
+          <input
+            type="text"
+            placeholder="Enter Nickname"
+            className={styles.nicknameInput}
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Enter Date (MM/DD/YYYY)"
+            className={styles.dateInput}
+            value={dateAdded}
+            onChange={(e) => setDateAdded(e.target.value)}
+          />
+          <button
+            className={styles.captureButton}
+            style={{ backgroundColor }}
+            onClick={savePokemon}
+          >
             Tag as Captured
           </button>
         </div>

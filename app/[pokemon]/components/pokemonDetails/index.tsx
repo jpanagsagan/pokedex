@@ -42,11 +42,6 @@ const PokemonDetails: React.FC<PokemonDetailsProps> = ({ details }) => {
     // Add the Pokémon to Zustand store
     addPokemon(newEntry);
 
-    // Save to localStorage
-    const existingData = JSON.parse(localStorage.getItem('pokemonData') || '[]');
-    existingData.push(newEntry);
-    localStorage.setItem('pokemonData', JSON.stringify(existingData));
-
     // Clear input fields after saving
     setNickname('');
     setDateAdded('');
@@ -62,8 +57,12 @@ const PokemonDetails: React.FC<PokemonDetailsProps> = ({ details }) => {
         <p>#{details.id}</p>
       </div>
 
-      <div className={styles.imageWrapper}>
-        <Image src={details.imageUrl} alt={details.name} fill className={styles.image} />
+      <div className={styles.pokemon}>
+        <div className={styles.imageWrapper}>
+          <Image src={details.imageUrl} alt={details.name} fill className={styles.image} />
+        </div>
+
+        <p className={styles.goBack}>{details.name}</p>
       </div>
 
       <div className={styles.detailsWrapper}>

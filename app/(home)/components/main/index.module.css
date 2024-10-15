@@ -27,3 +27,23 @@
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   font-family: 'Fredoka One', sans-serif;
 }
+.captured {
+  @apply relative flex flex-col w-full gap-4 items-center;
+}
+
+.captured .imageWrapper {
+  @apply relative w-24 h-24;
+}
+
+.captured .imageWrapper img {
+  position: unset;
+  @apply object-contain;
+}
+
+.captured .details {
+  @apply flex flex-col flex-1 h-full w-full gap-2;
+}
+
+.captured .details p {
+  @apply text-center text-base truncate;
+}

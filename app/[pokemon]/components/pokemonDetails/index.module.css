@@ -18,6 +18,9 @@
   font-family: 'Fredoka One', sans-serif;
 }
 
+.pokemon {
+  @apply relative w-full flex flex-col justify-center items-center gap-4;
+}
 .imageWrapper {
   @apply relative w-[16rem] h-[16rem];
 }

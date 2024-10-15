@@ -18,7 +18,7 @@
 }
 
 .listWrapper {
-  @apply h-full grid grid-cols-1 gap-4 p-4;
+  @apply grid grid-cols-1 gap-4 p-4;
 }
 
 .gridWrapper li,

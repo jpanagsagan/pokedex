@@ -77,7 +77,7 @@ const MainComponent: React.FC = () => {
           // Render captured Pokémon without InfiniteScroll
           <ul className={isList ? styles.listWrapper : styles.gridWrapper}>
             {savedPokemons.map((pokemon, index) => (
-              <Link key={index} href={`/${pokemon.name}`}>
+              <div key={index}>
                 <li className={styles.captured}>
                   <div className={styles.imageWrapper}>
                     <Image src={pokemon.img} alt={pokemon.name} fill />
@@ -89,7 +89,7 @@ const MainComponent: React.FC = () => {
                     <p> {pokemon.dateAdded}</p>
                   </div>
                 </li>
-              </Link>
+              </div>
             ))}
           </ul>
         )}

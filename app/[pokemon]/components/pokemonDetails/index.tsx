@@ -4,6 +4,7 @@ import styles from './index.module.css';
 import { PokemonType, typeColors } from '@/utils/colorEnums';
 import Image from 'next/image';
 import useStore from '@/store/store';
+import { useRouter } from 'next/navigation';
 
 type Details = {
   id: number;
@@ -24,6 +25,10 @@ const PokemonDetails: React.FC<PokemonDetailsProps> = ({ details }) => {
   const [nickname, setNickname] = useState('');
   const [dateAdded, setDateAdded] = useState('');
   const { addPokemon } = useStore();
+  const { filter } = useStore();
+  const deletePokemon = useStore(state => state.removePokemon)
+  const router = useRouter()
+
 
   const detailList: (keyof Details)[] = ['height', 'weight', 'base_experience', 'move'];
 
@@ -31,6 +36,7 @@ const PokemonDetails: React.FC<PokemonDetailsProps> = ({ details }) => {
   const backgroundColor = typeColors[details.type] || '#FFFFFF';
 
   const savePokemon = () => {
+    console.log('here')
     const newEntry = {
       id: details.id,
       img: details.imageUrl,
@@ -46,8 +52,13 @@ const PokemonDetails: React.FC<PokemonDetailsProps> = ({ details }) => {
     setNickname('');
     setDateAdded('');
     alert('Pokémon details saved successfully!');
+    router.push('/')
   };
 
+  const handlePokemonAction = () => {
+    filter === 'all' ? savePokemon() : deletePokemon(details.id);
+    filter === 'captured' && router.push('/')
+  }
   return (
     <div className={styles.container} style={{ backgroundColor }}>
       <div className={styles.header}>
@@ -81,26 +92,30 @@ const PokemonDetails: React.FC<PokemonDetailsProps> = ({ details }) => {
 
         <h3 className={styles.statusTitle}>Status</h3>
         <div className={styles.inputWrapper}>
-          <input
-            type="text"
-            placeholder="Enter Nickname"
-            className={styles.nicknameInput}
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Enter Date (MM/DD/YYYY)"
-            className={styles.dateInput}
-            value={dateAdded}
-            onChange={(e) => setDateAdded(e.target.value)}
-          />
+          {filter === 'all' &&
+          <>
+            <input
+              type="text"
+              placeholder="Enter Nickname"
+              className={styles.nicknameInput}
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Enter Date (MM/DD/YYYY)"
+              className={styles.dateInput}
+              value={dateAdded}
+              onChange={(e) => setDateAdded(e.target.value)}
+            />
+          </>
+          }
           <button
             className={styles.captureButton}
-            style={{ backgroundColor }}
-            onClick={savePokemon}
+            style={filter === 'all' ? {  backgroundColor } : {backgroundColor:'red'}}
+            onClick={handlePokemonAction}
           >
-            Tag as Captured
+           {filter === 'all' ? 'Tag as Captured' : 'Uncapture'} 
           </button>
         </div>
       </div>

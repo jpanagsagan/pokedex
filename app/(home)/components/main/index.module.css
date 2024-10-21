@@ -23,15 +23,21 @@
 
 .gridWrapper li,
 .listWrapper li {
-  @apply bg-white p-4 rounded-lg min-h-32 cursor-pointer flex justify-center items-center uppercase;
+  @apply relative bg-white p-4 rounded-lg min-h-32 cursor-pointer flex flex-col md:flex-row justify-evenly items-center uppercase;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   font-family: 'Fredoka One', sans-serif;
 }
+
+.gridWrapper li img,
+.listWrapper li img{
+position: unset;
+}
+
 .captured {
   @apply relative flex flex-col w-full gap-4 items-center;
 }
 
-.captured .imageWrapper {
+.imageWrapper {
   @apply relative w-24 h-24;
 }
 
@@ -46,4 +52,20 @@
 
 .captured .details p {
   @apply text-center text-base truncate;
+}
+
+.removeBtn{
+  @apply absolute top-3 right-3 text-sm text-red-500;
+}
+
+.confirmationModalWrapper{
+  @apply absolute top-0 left-0 w-full h-full  flex justify-center items-center;
+}
+
+.confirmationModal{
+  @apply w-[80%] h-28 bg-slate-300 text-center p-4 flex flex-col justify-between;
+}
+
+.confirmationOptions{
+  @apply w-full flex justify-around;
 }

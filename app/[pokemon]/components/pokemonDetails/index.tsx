@@ -5,6 +5,8 @@ import { PokemonType, typeColors } from '@/utils/colorEnums';
 import Image from 'next/image';
 import useStore from '@/store/store';
 import { useRouter } from 'next/navigation';
+import ConfirmationModal from '@/components/modal';
+import { useForm } from 'react-hook-form';
 
 type Details = {
   id: number;
@@ -21,44 +23,49 @@ type PokemonDetailsProps = {
   details: Details;
 };
 
+type FormData = {
+  nickname: string;
+  dateAdded: string;
+};
+
 const PokemonDetails: React.FC<PokemonDetailsProps> = ({ details }) => {
-  const [nickname, setNickname] = useState('');
-  const [dateAdded, setDateAdded] = useState('');
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const detailList: (keyof Details)[] = ['height', 'weight', 'base_experience', 'move'];
+  const backgroundColor = typeColors[details.type] || '#FFFFFF';
+  const { register, handleSubmit, reset } = useForm<FormData>();
+  const deletePokemon = useStore((state) => state.removePokemon);
   const { addPokemon } = useStore();
   const { filter } = useStore();
-  const deletePokemon = useStore(state => state.removePokemon)
-  const router = useRouter()
+  const router = useRouter();
 
+  const handleActionButton = (data: FormData) => {
+    if (filter === 'all') {
+      savePokemon(data);
+    } else {
+      setShowConfirmationModal(true);
+    }
+  };
 
-  const detailList: (keyof Details)[] = ['height', 'weight', 'base_experience', 'move'];
-
-  // Get the background color based on the Pokémon type
-  const backgroundColor = typeColors[details.type] || '#FFFFFF';
-
-  const savePokemon = () => {
-    console.log('here')
+  const savePokemon = (data: FormData) => {
     const newEntry = {
       id: details.id,
       img: details.imageUrl,
       name: details.name,
-      nickname,
-      dateAdded,
+      nickname: data.nickname,
+      dateAdded: data.dateAdded,
     };
 
-    // Add the Pokémon to Zustand store
     addPokemon(newEntry);
-
-    // Clear input fields after saving
-    setNickname('');
-    setDateAdded('');
+    reset();
     alert('Pokémon details saved successfully!');
-    router.push('/')
+    router.push('/');
   };
 
-  const handlePokemonAction = () => {
-    filter === 'all' ? savePokemon() : deletePokemon(details.id);
-    filter === 'captured' && router.push('/')
-  }
+  const handleDeletePokemon = () => {
+    deletePokemon(details.id);
+    router.push('/');
+  };
+
   return (
     <div className={styles.container} style={{ backgroundColor }}>
       <div className={styles.header}>
@@ -91,34 +98,40 @@ const PokemonDetails: React.FC<PokemonDetailsProps> = ({ details }) => {
         </div>
 
         <h3 className={styles.statusTitle}>Status</h3>
-        <div className={styles.inputWrapper}>
-          {filter === 'all' &&
-          <>
-            <input
-              type="text"
-              placeholder="Enter Nickname"
-              className={styles.nicknameInput}
-              value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Enter Date (MM/DD/YYYY)"
-              className={styles.dateInput}
-              value={dateAdded}
-              onChange={(e) => setDateAdded(e.target.value)}
-            />
-          </>
-          }
+
+        <form className={styles.inputWrapper} onSubmit={handleSubmit(handleActionButton)}>
+          {filter === 'all' && (
+            <>
+              <input
+                type="text"
+                placeholder="Enter Nickname"
+                className={styles.nicknameInput}
+                {...register('nickname')}
+              />
+              <input
+                type="text"
+                placeholder="Enter Date (MM/DD/YYYY)"
+                className={styles.dateInput}
+                {...register('dateAdded')}
+              />
+            </>
+          )}
           <button
+            type="submit"
             className={styles.captureButton}
-            style={filter === 'all' ? {  backgroundColor } : {backgroundColor:'red'}}
-            onClick={handlePokemonAction}
+            style={filter === 'all' ? { backgroundColor } : { backgroundColor: 'red' }}
           >
-           {filter === 'all' ? 'Tag as Captured' : 'Uncapture'} 
+            {filter === 'all' ? 'Tag as Captured' : 'Uncapture'}
           </button>
-        </div>
+        </form>
       </div>
+
+      {showConfirmationModal && (
+        <ConfirmationModal
+          handleDeletePokemon={handleDeletePokemon}
+          setShowConfirmationModal={setShowConfirmationModal}
+        />
+      )}
     </div>
   );
 };

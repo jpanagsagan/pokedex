@@ -29,7 +29,7 @@ interface PokemonResponse {
 const MainComponent: React.FC = () => {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [nextUrl, setNextUrl] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [deleteId, setDeleteId] = useState<number>(0);
   const isList = useStore((state) => state.isList);
@@ -42,9 +42,6 @@ const MainComponent: React.FC = () => {
 
   // Remove `useCallback` and just define the functions normally
   const loadPokemons = async (url: string | null) => {
-    if (loading || !url) return;
-
-    setLoading(true);
     try {
       const data: PokemonResponse = await fetchPokemons(url!);
       const pokemonData = data.results;
@@ -59,7 +56,6 @@ const MainComponent: React.FC = () => {
   };
 
   const loadPokemonByName = async (name: string) => {
-    setLoading(true);
     try {
       const data: PokemonDetailsResponse = await fetchPokemonByName(name);
       const formattedPokemonData = [
@@ -78,7 +74,10 @@ const MainComponent: React.FC = () => {
   };
 
   useEffect(() => {
+    setShowConfirmationModal(false);
+    setDeleteId(0);
     setPokemons([]);
+    console.log('Filter:', filter);
     if (searchName) {
       loadPokemonByName(searchName);
     } else {
@@ -120,62 +119,59 @@ const MainComponent: React.FC = () => {
             scrollableTarget="scrollableDiv"
           >
             <ul className={isList ? styles.listWrapper : styles.gridWrapper}>
-              {pokemons.length > 0 ? (
-                pokemons.map((pokemon, index) => (
-                  <Link key={index} href={`/${pokemon.name}`}>
-                    <li>
-                      <div className={styles.imageWrapper}>
-                        <Image
-                          src={
-                            pokemon.img ||
-                            `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
-                              index + 1
-                            }.png`
-                          }
-                          alt={pokemon.name}
-                          fill
-                          className={styles.image}
-                        />
-                      </div>
-                      {pokemon.name}
-                    </li>
-                  </Link>
-                ))
-              ) : (
-                <div>No Pokemon Data</div>
-              )}
+              {pokemons.length > 0
+                ? pokemons.map((pokemon, index) => (
+                    <Link key={index} href={`/${pokemon.name}`}>
+                      <li>
+                        <div className={styles.imageWrapper}>
+                          <Image
+                            src={
+                              pokemon.img ||
+                              `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+                                index + 1
+                              }.png`
+                            }
+                            alt={pokemon.name}
+                            fill
+                            className={styles.image}
+                          />
+                        </div>
+                        {pokemon.name}
+                      </li>
+                    </Link>
+                  ))
+                : !loading && <div>No Pokemon Data</div>}
             </ul>
           </InfiniteScroll>
         ) : (
           <ul className={isList ? styles.listWrapper : styles.gridWrapper}>
-            {filterSavedPokemons.length > 0 ? (
-              filterSavedPokemons.map((pokemon, index) => (
-                <Link key={index} href={`/${pokemon.name}`}>
-                  <li className={styles.captured}>
-                    <div
-                      className={styles.removeBtn}
-                      onClick={() => {
-                        setShowConfirmationModal((prev) => !prev);
-                        setDeleteId(pokemon.id);
-                      }}
-                    >
-                      remove
-                    </div>
-                    <div className={styles.imageWrapper}>
-                      <Image src={pokemon.img} alt={pokemon.name} fill />
-                    </div>
+            {filterSavedPokemons.length > 0
+              ? filterSavedPokemons.map((pokemon, index) => (
+                  <Link key={index} href={`/${pokemon.name}`}>
+                    <li className={styles.captured}>
+                      <div
+                        className={styles.removeBtn}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setShowConfirmationModal((prev) => !prev);
+                          setDeleteId(pokemon.id);
+                        }}
+                      >
+                        remove
+                      </div>
+                      <div className={styles.imageWrapper}>
+                        <Image src={pokemon.img} alt={pokemon.name} fill />
+                      </div>
 
-                    <div className={styles.details}>
-                      <p>{pokemon.name}</p>
-                      <p>{pokemon.nickname}</p>
-                      <p>{pokemon.dateAdded}</p>
-                    </div>
-                  </li>
-                </Link>
-              ))
-            ) : (
-              <div>No Pokemon Data</div>
-            )}
+                      <div className={styles.details}>
+                        <p>{pokemon.name}</p>
+                        <p>{pokemon.nickname}</p>
+                        <p>{pokemon.dateAdded}</p>
+                      </div>
+                    </li>
+                  </Link>
+                ))
+              : !loading && <div>No Pokemon Data</div>}
           </ul>
         )}
       </div>

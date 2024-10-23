@@ -29,8 +29,8 @@
 }
 
 .gridWrapper li img,
-.listWrapper li img{
-position: unset;
+.listWrapper li img {
+  position: unset;
 }
 
 .captured {
@@ -54,18 +54,18 @@ position: unset;
   @apply text-center text-base truncate;
 }
 
-.removeBtn{
-  @apply absolute top-3 right-3 text-sm text-red-500;
+.removeBtn {
+  @apply absolute top-[-1rem] right-3 text-sm text-white bg-red-500 px-3 py-1 rounded-full;
 }
 
-.confirmationModalWrapper{
+.confirmationModalWrapper {
   @apply absolute top-0 left-0 w-full h-full  flex justify-center items-center;
 }
 
-.confirmationModal{
+.confirmationModal {
   @apply w-[80%] h-28 bg-slate-300 text-center p-4 flex flex-col justify-between;
 }
 
-.confirmationOptions{
+.confirmationOptions {
   @apply w-full flex justify-around;
 }

@@ -1,11 +1,24 @@
 .confirmationModalWrapper {
-  @apply absolute top-0 left-0 w-full h-full  flex justify-center items-center;
+  @apply absolute top-0 left-0 w-full h-full  flex justify-center items-center bg-[#000000CC];
 }
 
 .confirmationModal {
-  @apply w-[80%] md:w-[30%] h-28 bg-slate-300 text-center p-4 flex flex-col justify-between;
+  @apply w-[80%] md:w-[30%] h-28 bg-white text-center pt-4  flex flex-col justify-between;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
 .confirmationOptions {
-  @apply w-full flex justify-around;
+  @apply w-full flex justify-evenly flex-1;
+}
+
+.confirmationOptions div {
+  @apply cursor-pointer w-full h-full flex items-center justify-center flex-1;
+}
+
+.confirmationOptions div:hover p {
+  @apply text-[#FF0000];
+}
+
+.confirmationOptions div p {
+  @apply w-full  text-center;
 }

@@ -17,7 +17,7 @@ interface PokemonState {
   setFilter: (filter: 'all' | 'captured') => void;
   isList: boolean;
   toggleView: () => void;
-  removePokemon: (id:number) => void;
+  removePokemon: (id: number) => void;
 }
 
 const useStore = create<PokemonState>()(
@@ -34,7 +34,7 @@ const useStore = create<PokemonState>()(
       setFilter: (filter) => set({ filter }),
       removePokemon: (id) =>
         set((state) => ({
-          savedPokemons: state.savedPokemons.filter(savedPokemon => savedPokemon.id !== id)
+          savedPokemons: state.savedPokemons.filter((savedPokemon) => savedPokemon.id !== id),
         })),
     }),
     {
